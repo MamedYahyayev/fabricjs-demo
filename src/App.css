@@ -1,0 +1,30 @@
+.App {
+  display: flex;
+  justify-content: space-around;
+}
+
+#canvas {
+  border: 2px solid red;
+}
+
+.tools {
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+  border: 2px solid red;
+  height: 500px;
+  overflow-y: auto;
+}
+
+.tool-element {
+  margin-bottom: 1em;
+}
+
+.elements {
+  width: 200px;
+  border: 2px solid red;
+  margin: 3em;
+  padding: 3em;
+  height: 400px;
+  overflow-y: auto;
+}
