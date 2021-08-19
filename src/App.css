@@ -28,3 +28,13 @@
   height: 400px;
   overflow-y: auto;
 }
+
+
+.sizes  {
+  width: 200px;
+  margin: 1em 0;
+}
+
+.size-elements {
+  margin-bottom: 1em;
+}
