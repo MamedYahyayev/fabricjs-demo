@@ -8,22 +8,24 @@ function App() {
   const [canvasElements, setCanvasElements] = React.useState([]);
   const [selectedCircle, setSelectedCircle] = React.useState(null);
 
-  const handleSelect = (id) => {
-    console.log(id);
+  React.useEffect(() => {
+    console.log("canvas elements: ", canvasElements);
+  }, [canvasElements]);
+
+  const handleSelect = (newCanvasElement) => {
+    setSelectedCircle(newCanvasElement.canvas);
   };
 
   const addCircle = () => {
     const id = number.current;
     const circleEl = new fabric.Circle({ radius: 30, fill: "purple" });
-    circleEl.onSelect = () => handleSelect(id);
-
     const newCanvasElement = { id, name: `Circle-${id}`, canvas: circleEl };
+    circleEl.onSelect = () => handleSelect(newCanvasElement);
+
     setCanvasElements((prevCanvasElements) => [
       ...prevCanvasElements,
       newCanvasElement,
     ]);
-
-    console.log("canvas elements: ", canvasElements);
 
     setSelectedCircle(circleEl);
     window.canvas.add(circleEl);
