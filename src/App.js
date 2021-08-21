@@ -8,9 +8,12 @@ function App() {
   const rectNumber = React.useRef(circleNumber.current + 10);
   const imageRef = React.useRef();
   const [canvasElements, setCanvasElements] = React.useState([]);
-  const [selectedShape, setSelectedShape] = React.useState({});
-
+  const [selectedShape, setSelectedShape] = React.useState(null);
   const [file, setFile] = React.useState("");
+
+  React.useEffect(() => {
+    console.log("selected shape inside of useEffect: ", selectedShape);
+  }, [selectedShape]);
 
   const handleShapeSelection = (canvasElement) => {
     setSelectedShape(canvasElement.canvas);
@@ -78,9 +81,18 @@ function App() {
 
   const uploadImage = () => {
     console.log("file in upload image: ", file);
+
     const imageEl = new fabric.Image(imageRef.current, {
       left: 100,
       top: 100,
+      originY: "center",
+      originX: "center",
+      borderColor: "#d6d6d6",
+      cornerColor: "#d6d6d6",
+      cornerSize: 5,
+      cornerStyle: "circle",
+      transparentCorners: false,
+      lockUniScaling: true,
     });
 
     console.log(imageEl);
@@ -123,7 +135,7 @@ function App() {
           Upload Image
         </button>
 
-        {selectedShape.canvas && (
+        {selectedShape && (
           <div className="sizes">
             Sizes
             <div className="size-elements">
@@ -131,7 +143,7 @@ function App() {
               <input
                 type="text"
                 onChange={(e) => changeShapeWidth(e)}
-                value={selectedShape.width}
+                value={selectedShape.get("width")}
               />
             </div>
             <div className="size-elements">
@@ -139,7 +151,7 @@ function App() {
               <input
                 type="text"
                 onChange={(e) => changeShapeHeight(e)}
-                value={selectedShape.height}
+                value={selectedShape.get("height")}
               />
             </div>
           </div>
