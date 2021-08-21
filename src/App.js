@@ -12,11 +12,13 @@ function App() {
   const [file, setFile] = React.useState("");
 
   React.useEffect(() => {
-    console.log("selected shape inside of useEffect: ", selectedShape);
-  }, [selectedShape]);
+    // console.log("selected shape inside of useEffect: ", selectedShape);
+    // console.log("active object remove: ", window.canvas.remove(window.canvas.getActiveObject()))
+    console.log("canvas elements: ", canvasElements)
+  }, [canvasElements]);
 
   const handleShapeSelection = (canvasElement) => {
-    setSelectedShape(canvasElement.canvas);
+    setSelectedShape(canvasElement);
   };
 
   const addCircle = () => {
@@ -60,17 +62,17 @@ function App() {
   };
 
   const changeShapeColor = (e) => {
-    selectedShape.set("fill", e.target.value);
+    selectedShape.canvas.set("fill", e.target.value);
     window.canvas.renderAll();
   };
 
   const changeShapeWidth = (e) => {
-    selectedShape.set({ width: +e.target.value });
+    selectedShape.canvas.set({ width: +e.target.value });
     window.canvas.renderAll();
   };
 
   const changeShapeHeight = (e) => {
-    selectedShape.set({ height: +e.target.value });
+    selectedShape.canvas.set({ height: +e.target.value });
     window.canvas.renderAll();
   };
 
@@ -87,16 +89,26 @@ function App() {
       top: 100,
       originY: "center",
       originX: "center",
-      borderColor: "#d6d6d6",
-      cornerColor: "#d6d6d6",
-      cornerSize: 5,
-      cornerStyle: "circle",
-      transparentCorners: false,
+      borderColor: "red",
+      cornerColor: "green",
+      cornerSize: 10,
+      cornerStyle: "rectangle",
+      transparentCorners: true,
       lockUniScaling: true,
     });
 
     console.log(imageEl);
     window.canvas.add(imageEl);
+  };
+
+  const removeElement = (id) => {
+    const canvasElIndex = canvasElements.findIndex((el) => el.id === id);
+    const canvasElement = canvasElements[canvasElIndex];
+    const updatedCanvasElements = canvasElements.filter(
+      (element) => element.id !== id
+    );
+    setCanvasElements(updatedCanvasElements);
+    window.canvas.remove(canvasElement.canvas);
   };
 
   return (
@@ -135,7 +147,7 @@ function App() {
           Upload Image
         </button>
 
-        {selectedShape && (
+        {/* {selectedShape && (
           <div className="sizes">
             Sizes
             <div className="size-elements">
@@ -143,7 +155,7 @@ function App() {
               <input
                 type="text"
                 onChange={(e) => changeShapeWidth(e)}
-                value={selectedShape.get("width")}
+                value={selectedShape.canvas.get("width")}
               />
             </div>
             <div className="size-elements">
@@ -151,17 +163,25 @@ function App() {
               <input
                 type="text"
                 onChange={(e) => changeShapeHeight(e)}
-                value={selectedShape.get("height")}
+                value={selectedShape.canvas.get("height")}
               />
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="elements">
         Elements
         {canvasElements.map((el) => (
-          <p key={el.id}>{el.name}</p>
+          <p key={el.id}>
+            {el.name}{" "}
+            <span
+              className="delete-element"
+              onClick={() => removeElement(el.id)}
+            >
+              X
+            </span>
+          </p>
         ))}
       </div>
     </div>
