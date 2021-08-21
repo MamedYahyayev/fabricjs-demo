@@ -2,7 +2,7 @@ import "./App.css";
 import DesignCanvas from "./components/DesignCanvas";
 import React from "react";
 import { fabric } from "fabric";
-
+// source of delete icon when select:  https://stackoverflow.com/questions/35630508/add-delete-button-on-element-in-canvas-fabric-js
 function App() {
   const circleNumber = React.useRef(1);
   const rectNumber = React.useRef(circleNumber.current + 10);
@@ -14,18 +14,35 @@ function App() {
   React.useEffect(() => {
     // console.log("selected shape inside of useEffect: ", selectedShape);
     // console.log("active object remove: ", window.canvas.remove(window.canvas.getActiveObject()))
-    console.log("canvas elements: ", canvasElements)
+    console.log("canvas elements: ", canvasElements);
   }, [canvasElements]);
 
   const handleShapeSelection = (canvasElement) => {
     setSelectedShape(canvasElement);
+    console.log("handle shape selection:" ,  canvasElement.canvas)
+    addDeleteBtn(canvasElement.canvas.oCoords.tr.x, canvasElement.canvas.oCoords.tr.y)
+  };
+
+  const addDeleteBtn = (x, y) => {
+    var btnLeft = x - 10;
+    var btnTop = y - 10;
+    var deleteBtn =
+      '<img src="https://www.funagain.com/images/old/common/delete-icon.png" class="deleteBtn" style="position:absolute;top:' +
+      btnTop +
+      "px;left:" +
+      btnLeft +
+      'px;cursor:pointer;width:20px;height:20px;"/>';
   };
 
   const addCircle = () => {
+    const elementControls = {
+      tr: false,
+    };
     const id = circleNumber.current;
     const circleEl = new fabric.Circle({ radius: 30, fill: "purple" });
     const newCanvasElement = { id, name: `Circle-${id}`, canvas: circleEl };
     circleEl.onSelect = () => handleShapeSelection(newCanvasElement);
+    circleEl.setControlsVisibility(elementControls);
 
     setCanvasElements((prevCanvasElements) => [
       ...prevCanvasElements,
@@ -113,7 +130,9 @@ function App() {
 
   return (
     <div className="App">
-      <DesignCanvas width={800} height={800}></DesignCanvas>
+      <DesignCanvas width={800} height={800}>
+
+      </DesignCanvas>
       <div className="tools">
         <button onClick={() => addCircle()} className="tool-element">
           Add Circle

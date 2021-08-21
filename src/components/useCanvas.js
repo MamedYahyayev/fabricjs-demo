@@ -6,6 +6,8 @@ window.canvas = new fabric.Canvas("canvas", {
   backgroundColor: "rgb(100,100,200)",
   selectionColor: "blue",
   selectionLineWidth: 2,
+  controlsAboveOverlay: true,
+  centeredScaling: true,
 });
 
 export function useCanvas() {
